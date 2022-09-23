@@ -1,8 +1,8 @@
 
 provider "vault" {
-  # Configuration options
+  # Configuration options - export these variables to apply
   #export VAULT_TOKEN=""
-  #export VAULT_ADDR="https:///"
+  #export VAULT_ADDR="https://"
 }
 
 terraform {
