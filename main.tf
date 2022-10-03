@@ -117,7 +117,7 @@ resource "vault_github_auth_backend" "glueops" {
 }
 
 resource "vault_github_auth_backend" "client" {
-  organization = "demo-antoniostacos"
+  organization = "antoniostacos"
   path         = "github"
 
   tune {
