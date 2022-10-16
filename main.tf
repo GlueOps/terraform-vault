@@ -1,5 +1,6 @@
-locals {
-  vault_addr = "https://vault-server-address-goes-here" # Example: "https://vault.us-production.glueops.rocks"
+variable "VAULT_ADDR" {
+  type        = string
+  description = "The url of the vault server Example: https://vault.us-production.glueops.rocks"
 }
 
 terraform {
@@ -16,7 +17,7 @@ terraform {
 }
 
 provider "vaultoperator" {
-  vault_addr = local.vault_addr
+  vault_addr = var.VAULT_ADDR
 }
 
 resource "vaultoperator_init" "default" {
@@ -26,7 +27,7 @@ resource "vaultoperator_init" "default" {
 
 provider "vault" {
   token   = vaultoperator_init.default.root_token
-  address = local.vault_addr
+  address = var.VAULT_ADDR
 }
 
 
