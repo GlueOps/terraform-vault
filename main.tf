@@ -211,3 +211,30 @@ resource "vault_mount" "secrets_kvv2" {
   type        = "kv-v2"
   description = "KV Version 2 secrets mount"
 }
+  
+data "tfe_organizations" "default" {}
+
+  
+resource "tfe_variable_set" "vault" {
+  name         = "Global Varset"
+  description  = "Variable set applied to all workspaces."
+  global       = true
+  organization = data.tfe_organizations.default.names[0]
+}
+  
+  
+resource "tfe_variable" "vault-addr" {
+  key             = "TF_VAR_VAULT_ADDR"
+  value           = var.VAULT_ADDR
+  category        = "env"
+  description     = "Vault Server URL"
+  variable_set_id = tfe_variable_set.vault.id
+}
+  
+resource "tfe_variable" "vault-token" {
+  key             = "TF_VAR_VAULT_TOKEN"
+  value           = vaultoperator_init.default.root_token
+  category        = "env"
+  description     = "Vault Root Token"
+  variable_set_id = tfe_variable_set.vault.id
+}
