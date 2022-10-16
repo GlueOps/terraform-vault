@@ -1,17 +1,33 @@
-
-provider "vault" {
-  # Configuration options - export these variables to apply
-  #export VAULT_TOKEN=""
-  #export VAULT_ADDR="https://"
+variable "VAULT_ADDR" {
+  type        = string
+  description = "The url of the vault server Example: https://vault.us-production.glueops.rocks"
 }
 
 terraform {
   required_providers {
+    vaultoperator = {
+      source  = "rickardgranberg/vaultoperator"
+      version = "0.1.6"
+    }
     vault = {
       source  = "hashicorp/vault"
       version = "3.8.2"
     }
   }
+}
+
+provider "vaultoperator" {
+  vault_addr = var.VAULT_ADDR
+}
+
+resource "vaultoperator_init" "default" {
+  recovery_shares    = 5
+  recovery_threshold = 3
+}
+
+provider "vault" {
+  token   = vaultoperator_init.default.root_token
+  address = var.VAULT_ADDR
 }
 
 
