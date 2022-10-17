@@ -216,23 +216,16 @@ resource "vault_mount" "secrets_kvv2" {
   description = "KV Version 2 secrets mount"
 }
   
-data "tfe_organizations" "default" {}
+data "tfe_organization" "foo" {
+  name = "dev-venkata"
+}
 
   
 resource "tfe_variable_set" "vault" {
   name         = "Global Varset"
   description  = "Variable set applied to all workspaces."
   global       = true
-  organization = "dev-venkata"
-}
-  
-  
-resource "tfe_variable" "vault-addr" {
-  key             = "TF_VAR_VAULT_ADDR"
-  value           = var.VAULT_ADDR
-  category        = "env"
-  description     = "Vault Server URL"
-  variable_set_id = tfe_variable_set.vault.id
+  organization = data.tfe_organization.foo.name
 }
   
 resource "tfe_variable" "vault-token" {
