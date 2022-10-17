@@ -216,22 +216,30 @@ resource "vault_mount" "secrets_kvv2" {
   description = "KV Version 2 secrets mount"
 }
   
-data "tfe_organization" "foo" {
-  name = "dev-venkata"
+resource "tfe_organization" "test" {
+  name  = "my-org-name"
+  email = "admin@company.com"
 }
 
-  
-resource "tfe_variable_set" "vault" {
-  name         = "Global Varset"
-  description  = "Variable set applied to all workspaces."
-  global       = true
-  organization = data.tfe_organization.foo.name
+resource "tfe_variable_set" "test" {
+  name         = "Test Varset"
+  description  = "Some description."
+  global       = false
+  organization = tfe_organization.test.name
 }
-  
-resource "tfe_variable" "vault-token" {
-  key             = "TF_VAR_VAULT_TOKEN"
-  value           = vaultoperator_init.default.root_token
+
+resource "tfe_variable" "test-a" {
+  key             = "seperate_variable"
+  value           = "my_value_name"
+  category        = "terraform"
+  description     = "a useful description"
+  variable_set_id = tfe_variable_set.test.id
+}
+
+resource "tfe_variable" "test-b" {
+  key             = "another_variable"
+  value           = "my_value_name"
   category        = "env"
-  description     = "Vault Root Token"
-  variable_set_id = tfe_variable_set.vault.id
+  description     = "an environment variable"
+  variable_set_id = tfe_variable_set.test.id
 }
