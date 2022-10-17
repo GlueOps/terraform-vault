@@ -219,7 +219,7 @@ resource "tfe_variable_set" "vault" {
   name         = "Global Varset"
   description  = "Variable set applied to all workspaces."
   global       = true
-  organization = data.tfe_organizations.default.names[0]
+  organization = "dev-venkata"
 }
   
   
