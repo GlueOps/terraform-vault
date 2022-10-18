@@ -1,9 +1,11 @@
 
-provider "vault" {
-  # Configuration options - export these variables to apply
-  #export VAULT_TOKEN=""
-  #export VAULT_ADDR="https://"
-}
+# provider "vault" {
+#   # Configuration options - export these variables to apply
+#   #export VAULT_TOKEN=""
+#   #export VAULT_ADDR="https://"
+# }
+
+variable "GLUEOPS_ENV" {}
 
 terraform {
   required_providers {
@@ -158,7 +160,7 @@ resource "vault_kubernetes_auth_backend_config" "config" {
 }
 
 locals {
-  envs = ["development", "staging", "production"]
+  envs = [${var.GLUEOPS_ENV}]
 }
 
 resource "vault_kubernetes_auth_backend_role" "env_roles" {
