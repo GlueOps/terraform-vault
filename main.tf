@@ -167,7 +167,7 @@ resource "vault_kubernetes_auth_backend_role" "env_roles" {
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "${each.key}-vault-role"
   bound_service_account_names      = ["*"]
-  bound_service_account_namespaces = [each.key]
+  bound_service_account_namespaces = ["*"]
   token_ttl                        = 3600
   token_policies                   = ["${each.key}-secrets-reader"]
 }
