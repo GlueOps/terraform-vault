@@ -160,7 +160,7 @@ resource "vault_kubernetes_auth_backend_config" "config" {
 }
 
 locals {
-  envs = [${var.GLUEOPS_ENV}]
+  envs = [ "${var.GLUEOPS_ENV}" ]
 }
 
 resource "vault_kubernetes_auth_backend_role" "env_roles" {
